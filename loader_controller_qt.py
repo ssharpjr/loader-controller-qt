@@ -4,9 +4,7 @@
 import sys
 from PyQt5 import QtCore
 from PyQt5 import QtGui
-from PyQt5.QtWidgets import (QWidget, QLabel, QApplication,
-                             QGridLayout, QFormLayout, QHBoxLayout,
-                             QVBoxLayout)
+from PyQt5.QtWidgets import (QWidget, QLabel, QApplication, QVBoxLayout)
 
 
 class Example(QWidget):
@@ -44,7 +42,7 @@ class Example(QWidget):
         lbl_title.setAlignment(QtCore.Qt.AlignCenter)
         lbl_title.setStyleSheet("QLabel {background-color: blue;}")
 
-        lbl_wo = QLabel("Work Order:" + wo_id, self)
+        lbl_wo = QLabel("Work Order: " + wo_id, self)
         lbl_wo.setFont(font)
         lbl_wo.setPalette(font_color)
         lbl_wo.setAlignment(QtCore.Qt.AlignCenter)
