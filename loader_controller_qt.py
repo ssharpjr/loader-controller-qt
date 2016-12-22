@@ -42,20 +42,23 @@ class Example(QWidget):
         lbl_title.setAlignment(QtCore.Qt.AlignCenter)
         lbl_title.setStyleSheet("QLabel {background-color: blue;}")
 
-        lbl_wo = QLabel("Work Order: " + wo_id, self)
-        lbl_wo.setFont(font)
-        lbl_wo.setPalette(font_color)
-        lbl_wo.setAlignment(QtCore.Qt.AlignCenter)
 
         lbl_itemno = QLabel(itemno + "\n" + desc, self)
         lbl_itemno.setFont(font)
         lbl_itemno.setPalette(font_color)
         lbl_itemno.setAlignment(QtCore.Qt.AlignCenter)
 
+        lbl_wo = QLabel("Work Order:\n " + wo_id, self)
+        lbl_wo.setFont(font)
+        lbl_wo.setPalette(font_color)
+        lbl_wo.setAlignment(QtCore.Qt.AlignCenter)
+        lbl_wo.setStyleSheet("QLabel {background-color: green;}")
+
         lbl_rm_itemno = QLabel("Raw Material Item Number:\n" + rm_itemno, self)
         lbl_rm_itemno.setFont(font)
         lbl_rm_itemno.setPalette(font_color)
         lbl_rm_itemno.setAlignment(QtCore.Qt.AlignCenter)
+        lbl_rm_itemno.setStyleSheet("QLabel {background-color: green;}")
 
         vbox = QVBoxLayout()
         vbox.addWidget(lbl_title)
