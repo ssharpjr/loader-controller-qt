@@ -7,7 +7,7 @@ from PyQt5 import QtGui
 from PyQt5.QtWidgets import (QWidget, QLabel, QApplication, QVBoxLayout)
 
 
-class Example(QWidget):
+class MainWindow(QWidget):
 
 
     def __init__(self):
@@ -69,25 +69,6 @@ class Example(QWidget):
         vbox.addStretch()
         vbox.addWidget(lbl_rm_itemno)
 
-        # grid = QGridLayout()
-        # grid.setSpacing(10)
-        # grid.setColumnStretch(0, 1)
-        # grid.setColumnStretch(4, 1)
-        # grid.setRowStretch(0, 1)
-        # grid.setRowStretch(4, 1)
-
-        # grid.addWidget(lbl_title, 1, 1)
-        # grid.addWidget(lbl_press, 2, 1)
-        # grid.addWidget(lbl_wo, 3, 1)
-
-        # self.setLayout(grid)
-
-        # fbox = QFormLayout()
-        # fbox.addRow(lbl_title)
-        # fbox.addRow(lbl0)
-        # fbox.addRow(lbl_press)
-        # fbox.addRow(lbl_wo)
-
         self.setLayout(vbox)
         self.setPalette(app_color)
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
@@ -96,5 +77,5 @@ class Example(QWidget):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    ex = Example()
+    main = MainWindow()
     sys.exit(app.exec_())
