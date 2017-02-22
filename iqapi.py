@@ -29,7 +29,7 @@ def press_api_request(PRESS_ID):
     data = json.loads(resp.text)
 
     try:
-        press_id = data['press']
+        press_id = data['press_id']
         wo_id = data['wo_id']
         itemno = data['itemno']
         descrip = data['descrip']
@@ -39,24 +39,7 @@ def press_api_request(PRESS_ID):
     except:
         print("\nAPI Data is incomplete")
         print(data)
-
-
-def get_wo_id_from_press_api(PRESS_ID):
-    url = api_url + '/press/' + PRESS_ID
-    resp = requests.get(url=url, timeout=10)
-    data = json.loads(resp.text)
-
-    try:
-        press_id = data['press']
-        wo_id = data['wo_id']
-        itemno = data['itemno']
-        descrip = data['descrip']
-        itemno_mat = data['itemno_mat']
-        descrip_mat = data['descrip_mat']
-        return press_id
-    except:
-        print("\nAPI Data is incomplete")
-        print(data)
+        return None, None, None, None, None, None
 
 
 def wo_api_request(wo_id):
@@ -88,7 +71,7 @@ def serial_api_request(sn):
 
 def test_press_api_request(press_id):
     press_id, wo_id, itemno, descrip,\
-    itemno_mat, descrip_mat = press_api_request(press_id)
+        itemno_mat, descrip_mat = press_api_request(press_id)
 
     print("Testing Press API Request")
     print("\nPress: " + press_id)
@@ -106,6 +89,7 @@ def test_wo_api_request(wo_id):
     print("Press: " + press)
     print("\nWork Order: " + wo_id)
     print("Raw Material Item Number: " + rmat)
+
 
 if __name__ == '__main__':
     test_press_api_request('136')

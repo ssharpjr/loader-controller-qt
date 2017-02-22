@@ -2,18 +2,19 @@
 # -*- coding: utf-8 -*-
 
 import sys
+from time import sleep
 
 from PyQt5 import QtCore
 from PyQt5 import QtGui
 from PyQt5.QtWidgets import (QWidget, QLabel, QApplication, QVBoxLayout,
                              QLineEdit)
 
-# from iqapi import get_wo_id_from_press_api
 import iqapi as api
 
 
 # Variables
-PRESS_ID = "113"
+PRESS_ID = "136"
+DEBUG = True
 
 # wo_id = "10292565"
 # itemno = "1012324546"
@@ -65,6 +66,14 @@ class ScanWorkorderWindow(QWidget):
         self.txt_scan_wo.setStyleSheet("QLineEdit {background-color: black;\
                                                    border: 0px}")
 
+        # Setup Status Bar
+        self.lbl_statusbar = QLabel("", self)
+        self.lbl_statusbar.setFont(self.font)
+        self.lbl_statusbar.setPalette(self.font_color)
+        self.lbl_statusbar.setAlignment(QtCore.Qt.AlignCenter)
+        self.lbl_statusbar.setStyleSheet("QLabel {background-color: red;}")
+        self.lbl_statusbar.hide()
+
         # Handlers
         self.txt_scan_wo.returnPressed.connect(self.check_wo_id_against_api)
 
@@ -75,37 +84,53 @@ class ScanWorkorderWindow(QWidget):
         vbox.addWidget(self.lbl_scan_wo)
         vbox.addWidget(self.txt_scan_wo)
         vbox.addStretch()
-        vbox.addStretch()
+        vbox.addWidget(self.lbl_statusbar)
 
         # Setup GUI
         self.setLayout(vbox)
         self.setPalette(app_color)
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
         self.showMaximized()
+        self.txt_scan_wo.setFocus()
 
     def get_press_api_request(self, PRESS_ID):
-        press_id, wo_id, itemno, descrip, itemno_mat,descrip_mat = api.press_api_request(PRESS_ID)
-        return press_id, wo_id, itemno_mat
+        press_id_api, wo_id_api, itemno_api, descrip_api, itemno_mat_api,\
+            descrip_mat_api = api.press_api_request(PRESS_ID)
+        return press_id_api, wo_id_api, itemno_mat_api
 
     def check_wo_id_against_api(self):
         wo_id_from_scan = self.txt_scan_wo.text()
-        press_id_api, wo_id_api, itemno_mat_api = self.get_press_api_request(PRESS_ID)
-        print(press_id_api)
+        press_id_api, wo_id_api,\
+            itemno_mat_api = self.get_press_api_request(PRESS_ID)
+        if DEBUG:
+            print("Press ID from API: " + press_id_api)
+            print("Work order from API: " + wo_id_api)
+            print("RM Itemno from API: " + itemno_mat_api)
         # Verify Press ID
         if not press_id_api == PRESS_ID:
             # If the Press IDs do not match, 'reset' the Window
-            print("Press IDs do not match")
+            if DEBUG:
+                print(PRESS_ID + " vs. " + press_id_api)
             self.txt_scan_wo.clear()
             return
         # Verify Work order
         if not wo_id_from_scan == wo_id_api:
             # If work orders do not match, 'reset' the Window
             print("Incorrect work order")
+            self.lbl_statusbar.show()
+            self.lbl_statusbar.setText("Press: " + PRESS_ID +
+                                       " is not running " +
+                                       "Work order: " + wo_id_from_scan)
+            QtCore.QTimer.singleShot(3000, self.hide_statusbar)
             self.txt_scan_wo.clear()
             return
         # If the Press ID and Work order match, return the RM Item number
         print("Press ID and Work order match")
-        return itemno_mat_api
+        return self.itemno_mat_from_api
+
+    def hide_statusbar(self):
+        self.lbl_statusbar.hide()
+        self.lbl_statusbar.clear()
 
 
 class ScanSerialWindow(QWidget):
